@@ -98,7 +98,7 @@ function get($file,$silent,$nobackup,$basePath) {
 if (php_sapi_name() == 'cli') {
     
     // define the supported argument flags
-    $args = getopt("gsncyl:pj:");
+    $args = getopt("gsncyl:pj:f");
     
     // process the arguments
     if (isset($args["g"])) {
@@ -111,11 +111,27 @@ if (php_sapi_name() == 'cli') {
         
         // start chatty
         if (!$silent) {
-            print "getting the YAML file from the repo...\n";
+            print "getting the YAML file from the commuity managed repo...\n";
         }
         
         // get the file
         get("https://raw.github.com/tobie/ua-parser/master/regexes.yaml",$silent,$nobackup,$basePath);
+        
+    } else if (isset($args["f"])) {
+        
+        /* Get regexes.yaml from the repo and convert it to JSON */
+        
+        // set-up some standard vars
+        $silent   = isset($args["s"]) ? true : false;
+        $nobackup = isset($args["n"]) ? true : false;
+        
+        // start chatty
+        if (!$silent) {
+            print "getting the YAML file from the local (forked) repo...\n";
+        }
+        
+        // get the file
+        get($basePath."../regexes.yaml",$silent,$nobackup,$basePath);
         
     } else if (isset($args["c"])) {
     
@@ -250,7 +266,12 @@ if (php_sapi_name() == 'cli') {
         print "    Use the -p flag to pretty print the JSON result when using PHP 5.4+.\n";
         print "\n";
         print "  php uaparser-cli.php -g [-s] [-n]\n";
-        print "    Fetches an updated YAML file for ua-parser and overwrites the current JSON file.\n";
+        print "    Fetches acommunity maintained YAML file for ua-parser and overwrites the current JSON file.\n";
+        print "    By default is verbose. Use -s to turn that feature off.\n";
+        print "    By default creates a back-up. Use -n to turn that feature off.\n";
+        print "\n";
+        print "  php uaparser-cli.php -f [-s] [-n]\n";
+        print "    Uses the locally forked YAML file for ua-parser and overwrites the current JSON file.\n";
         print "    By default is verbose. Use -s to turn that feature off.\n";
         print "    By default creates a back-up. Use -n to turn that feature off.\n";
         print "\n";
@@ -260,7 +281,8 @@ if (php_sapi_name() == 'cli') {
         print "    By default creates a back-up. Use -n to turn that feature off.\n";
         print "\n";
         print "  php uaparser-cli.php -y\n";
-        print "    Fetches an updated YAML file. If you need to add a new UA it's easier to edit\n";
+        print "    Fetches an unversioned YAML file from the central community source.\n"
+        print "    If you need to add a new UA it's easier to edit\n";
         print "    the original YAML and then convert it. Warning: This method overwrites any\n";
         print "    existing regexes.yaml file.\n";
         print "\n";
