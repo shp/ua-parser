@@ -281,7 +281,7 @@ if (php_sapi_name() == 'cli') {
         print "    By default creates a back-up. Use -n to turn that feature off.\n";
         print "\n";
         print "  php uaparser-cli.php -y\n";
-        print "    Fetches an unversioned YAML file from the central community source.\n"
+        print "    Fetches an unversioned YAML file from the central community source.\n";
         print "    If you need to add a new UA it's easier to edit\n";
         print "    the original YAML and then convert it. Warning: This method overwrites any\n";
         print "    existing regexes.yaml file.\n";
